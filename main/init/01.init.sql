@@ -1,0 +1,6 @@
+CREATE ROLE userbackup WITH
+    REPLICATION
+    LOGIN
+    PASSWORD 'Replica123';
+
+SELECT * FROM pg_create_physical_replication_slot('replication_slot_main');

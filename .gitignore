@@ -1,0 +1,51 @@
+# PostgreSQL data directories
+main/data/*
+replica/data/*
+
+# Keep data directory structure but ignore contents
+!main/data/.gitkeep
+!replica/data/.gitkeep
+
+# PostgreSQL specific files
+*.pid
+*.backup
+*.dump
+*.sql.gz
+
+# Docker related
+.env
+.env.local
+.env.*.local
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# System files
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+
+# Logs
+logs/
+*.log
+*.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Temporary files
+tmp/
+temp/

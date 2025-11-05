@@ -1,0 +1,54 @@
+services:
+  main:
+    image: postgres:18
+    container_name: postgres-main
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=Admin123
+      - POSTGRES_DB=app_db
+      - PGDATA=/var/lib/postgresql/data
+    volumes:
+      - ./main/data:/var/lib/postgresql/data
+      - ./main/init:/docker-entrypoint-initdb.d
+      - ./main/conf/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./main/conf/pg_hba.conf:/etc/postgresql/pg_hba.conf
+      - type: tmpfs 
+        target: /dev/shm
+    command: >
+      -c config_file=/etc/postgresql/postgresql.conf
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 5
+
+  replica:
+    image: postgres:18
+    container_name: postgres-replica
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_PASSWORD=Admin123
+      - PGDATA=/var/lib/postgresql/data
+    volumes:
+      - ./replica/data:/var/lib/postgresql/data
+      - ./replica/init:/docker-entrypoint-initdb.d
+      - type: tmpfs 
+        target: /dev/shm
+    entrypoint: ["/bin/bash", "-c"]
+    command: |
+      "
+      if [ ! -s /var/lib/postgresql/data/PG_VERSION ]; then
+        rm -rf /var/lib/postgresql/data/*
+        PGPASSWORD=Replica123 pg_basebackup -h main -D /var/lib/postgresql/data -U userbackup -Fp -Xs -P -R
+        touch /var/lib/postgresql/data/standby.signal
+      fi
+      exec docker-entrypoint.sh postgres
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 5
+    depends_on:
+      main:
+        condition: service_healthy
